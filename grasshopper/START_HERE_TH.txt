@@ -1,0 +1,78 @@
+SIMPLE VORONOI — 2 x 2 x 2 m
+
+เริ่มที่ Simple_Voronoi_2m.gh
+ไฟล์ native Grasshopper มี sliders12ตัว ต่อเข้าสคริปต์ที่ฝังในไฟล์แล้ว ไม่ต้องรัน builder ก่อน
+ต้องใช้ Rhino + Grasshopper และ GhPython ที่ติดมากับ Rhino (component legacy Python Script)
+ไม่มี Ovenbird / PolyFrame / Kangaroo หรือ pluginเสริมสำหรับVoronoi
+
+แบบตั้งต้นเป็นโครงเป่าลมโปร่ง: เสา4ต้น คานรอบบน4ชิ้น และ Voronoi ribs3ชิ้น
+ทำVoronoiแค่บนระนาบหลังคา3ช่อง ไม่ทำ3D Voronoiเซลล์จำนวนมาก
+แต่ละท่อเป็นโมดูลตรง ไม่ใช่ผิว mesh คลี่สามเหลี่ยม
+ท่อหนึ่งใช้ผ้าแผ่นพัน1ชิ้น + ฝาปิด2ชิ้น
+รอยต่อเป็นแนวคิดผูกสาย/ปลอกต่อสำหรับทดลองถอดประกอบ ไม่ใช่ nodeที่คำนวณรับแรงหรือแพตเทิร์นผิวต่อเนื่องทั้งโครง
+
+Sliders
+W: ความกว้างภายนอกโครง 2000mm
+L: ความยาวภายนอกโครง 2000mm
+H: ความสูงยอดคาน 2000mm
+N: จำนวนช่อง Voronoi 2..6 (เริ่ม3เพื่อให้เรียบง่าย)
+Seed: เปลี่ยนรูปแบบตำแหน่งจุด
+Jitter: ความไม่สม่ำเสมอ 0..0.15 (เริ่ม0.06)
+D: เส้นผ่านศูนย์กลางเสา/คานหลัก 140mm
+RibD: เส้นผ่านศูนย์กลางVoronoi ribs 70mm (ต้องไม่มากกว่า D)
+SA: เผื่อตะเข็บ15mm
+Canopy: 0 = โครงโปร่งประหยัดผ้า, 1 = เพิ่มผ้าคลุมหลังคา
+StockW: หน้าผ้า1524mm
+StockL: ความยาวแพ็ก2743.2mm (3หลา)
+
+Outputs
+Frame: Meshท่อลม3D
+Cells: ผ้าคลุมหลังคาแบบแบน เปิดเมื่อCanopy=1
+Plan: เส้นแบ่งVoronoiบนหลังคา
+Cut: เส้นตัดผ้ารวมเผื่อตะเข็บ อยู่ด้านขวาที่X3500ขึ้นไป
+Stitch: เส้นอ้างอิงเย็บ ไม่ใช่แนวตัด
+Stock: กรอบแพ็กอ้างอิง ห้ามตัด
+IDs: รหัสโมดูลและชิ้นตัด
+Report: จำนวนท่อ จำนวนชิ้น จำนวนแพ็ก และพื้นที่ผ้า
+
+ค่าตั้งต้น
+Canopy=0: ท่อ11โมดูล; ชิ้นตัด49ชิ้นรวมpatch16ชิ้น; พื้นที่ชิ้นตัด8.65ตร.ม.; จัดลง4แพ็ก
+Canopy=1: เพิ่มหลังคาผ้า2ชิ้น; ชิ้นตัด51ชิ้น; พื้นที่ชิ้นตัด12.84ตร.ม.; จัดลง5แพ็ก
+จำนวนแพ็กมาจากการจัดวางชิ้นจริงแบบ shelf ไม่หมุนgrain และไม่ใช่ optimum nesting
+ยังไม่รวม port/valve, seam-seal tape, ผ้าเสียจากการทดลอง และ inflation compensation
+หลังคาแบบนี้แบน ไม่ใช่หลังคากันฝนที่ออกแบบระบายน้ำแล้ว
+
+ไฟล์อื่น
+Open_Frame_2000mm.3dm และ With_Canopy_2000mm.3dm: snapshotเปิดดูในRhinoได้
+*_Cut_mm.dxf: แนวตัดในหน่วยmm; ไม่ใช่G-codeหรือไฟล์ตั้งค่าเครื่อง
+*_Cut_List.csv: รหัสชิ้นและหมายเลขแพ็ก
+*_Report.txt: ผลคำนวณแบบตั้งต้น
+Grasshopper_Component.py: โค้ดเดียวกับที่ฝังในGH สำหรับแก้/วางเอง
+parameters.json: ค่าตั้งต้น
+Simple_Voronoi_preview.png: ภาพโครงโปร่งเทียบมีผ้าคลุม
+
+ใช้ผลิตแบบทดลอง
+1) เปิด GH และปรับN/Seed/W/L/Hตามต้องการ อ่านReportทุกครั้ง
+2) ทดสอบเย็บท่อตรง1ชิ้นก่อน แล้วค่อยทำชิ้นส่วนอื่น
+3) Bake Cut ลง layerตัด และ Stitch/IDs ลงlayerแยก แล้ว Export Selected DXFหน่วยmm
+4) ในCAMตัดเฉพาะ FABRIC_CUT; SEAM_REFERENCE/PART_IDSใช้ทำเครื่องหมาย
+5) แบบโมดูลใน3Dมีบริเวณท่อซ้อนกันที่จุดต่อ เป็นตำแหน่งอ้างอิง ต้อง mock-up ปลอกต่อและสายรัดก่อน
+6) เส้นผ่านศูนย์กลางท่อเล็กช่วยประหยัดผ้า แต่ยังไม่ได้ยืนยันความแข็ง/การทรงตัว
+   ใช้กับต้นแบบในอาคารที่มีจุดพยุง/สายค้ำและทดสอบโดยไม่มีคนใต้โครงก่อน
+
+การตรวจ
+ตรวจnativeGH archiveครบทั้งหมด, จำนวนsliders/inputs/outputsและสายเชื่อมครบ
+รันโค้ดที่ฝังในGHกับ rhino3dm เพื่อยืนยันรูปทรงvalidและclosed
+ตรวจพื้นที่Voronoiรวมตรงกับขอบเขต, ทุกชิ้นอยู่ในแพ็กและไม่มีbboxซ้อนกัน
+ลองจำนวนช่อง2/3/6และเปลี่ยนขนาด; DXFผ่านauditและหน่วยmm
+ยังไม่ได้เปิดรันในRhino desktop/Grasshopper UI จริง หรือทดสอบความดัน/แรง/รอยต่อ/blower
+
+ถ้าGhPython componentขึ้นแดงเพราะเวอร์ชัน
+เพิ่ม Python 3 Script ใน Rhino8 (Script-Mode)
+inputs: W,L,H,N,Seed,Jitter,D,RibD,SA,Canopy,StockW,StockL แบบItem/No Type Hint
+outputs: เก็บ out แล้ว Frame,Cells,Plan,Cut,Stitch,Stock,IDs,Report
+วางโค้ดทั้งหมดจาก Grasshopper_Component.py แล้วต่อ sliders
+
+Native GH serialization uses the GhPython public sample schema:
+https://github.com/mcneel/ghpython/blob/master/Samples/smoothingPolyline.gh
+https://github.com/mcneel/ghpython

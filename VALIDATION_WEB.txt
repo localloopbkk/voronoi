@@ -1,0 +1,29 @@
+AIR / SCRIPT — GitHub package validation
+2026-11-03
+
+PASS — JavaScript and Python geometry parity across 40 parameter cases:
+seeds 1/7/33/100 × 2–6 cells × canopy off/on. Compared module names and
+endpoints, piece names and dimensions, pack count, piece placement and cut area.
+PASS — All 40 layouts stay inside stock and have no bounding-box overlaps.
+PASS — Native GH archives have byte-for-byte identical decompressed data after
+an unedited JS roundtrip. Independent Python parser confirms edited archives
+alter only the intended Number Slider item for both included definitions.
+Simple GH: 14 objects / 12 sliders. Attached AAG: 260 objects / 46 sliders.
+PASS — Actual GH-upload handler, JSON import/export, all 12 current settings in
+downloaded native GH, DXF/CSV/OBJ handlers, reset and invalid-state clearing.
+PASS — Browser DXF read/audited using ezdxf: mm units, 102 closed polylines,
+49 part labels at defaults, no audit errors.
+PASS — Chrome UI: initial design, width/canopy update, part selection, GH
+source loading and immediate slider editing, export actions, GitHub instructions.
+PASS — Included mesh studio loads supplied 1600-triangle approximation and
+generates its default layout; DXF download is enabled. This separate mesh
+workflow has a much higher cloth-piece count than the Simple Voronoi design.
+
+NOT VERIFIED — Opening/recomputing native GH in Rhino desktop. Available
+checks validate serialization and the geometry core, not the Rhino GUI/runtime.
+NOT PROVIDED — Arbitrary Grasshopper execution in-browser, Rhino.Compute,
+real text-to-geometry inference, inflation/pressure/structural simulation,
+actuation hardware, blower sizing, certified joints, or CNC machine toolpaths.
+
+All values describe a geometric fabrication prototype. Build and measure a
+small seam/joint/inflation sample before relying on the full-scale patterns.

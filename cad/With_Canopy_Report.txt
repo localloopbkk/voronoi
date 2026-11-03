@@ -1,0 +1,9 @@
+SIMPLE VORONOI | 2000 x 2000 x 2000 mm
+3 planar Voronoi cells; 3 straight internal ribs; 11 tube modules
+Tube body = ONE wrap + TWO end caps per module (not mesh triangle panels).
+Canopy ON | 51 cloth pieces incl.16 reinforcement patches
+Nominal cut area 12.84 m2 | shelf nesting 5 packs (1524 x 2743.2 mm each)
+Seam allowance 15.0 mm | primary D140 / ribs D70 mm
+No pressure/stability/seam-strength simulation. No blower sizing result.
+Joints are strap/sleeve concepts; tube intersections in model are schematic.
+Ports, valves, seam-seal tape, failed coupons and inflation compensation excluded.
